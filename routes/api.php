@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RestaurantController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(["prefix" => "restaurants", "controller" => RestaurantController::class], function () {
+    Route::get('/', 'getAllRestaurants');
+    Route::get('/{id}',  'getRestaurant');
+    Route::post('/', 'createRestaurant');
+    Route::delete('/{id}',  'deleteRestaurant');
+    Route::put('/{id}',  'updateRestaurant');
 });
