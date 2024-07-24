@@ -13,4 +13,8 @@ class Restaurant extends Model
     {
         $this->hasMany(Review::class);
     }
+    public function hasMenus()
+    {
+        $this->hasMany(Menu::class);
+    }
 }
