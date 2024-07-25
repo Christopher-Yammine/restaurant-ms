@@ -65,4 +65,13 @@ class RestaurantController extends Controller
         $restaurant->delete();
         return response()->json(null, 204);
     }
+    public function restaurantMenus($id)
+    {
+        $restaurant = Restaurant::join('menus', 'menus.restaurant_id', '=', 'restaurants.id')
+            ->where('restaurants.id', $id)
+            ->get();
+        return response()->json([
+            "restaurant" => $restaurant
+        ]);
+    }
 }

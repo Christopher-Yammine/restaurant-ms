@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\RestaurantController;
+use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,10 +18,36 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(["prefix" => "restaurants", "controller" => RestaurantController::class], function () {
+Route::controller(AuthController::class)->group(function () {
+    Route::post('login', 'login');
+    Route::post('register', 'register');
+    Route::post('logout', 'logout');
+    Route::post('refresh', 'refresh');
+});
+
+Route::group([
+    "middleware" => "authenticate",
+    "prefix" => "restaurants",
+    "controller" => RestaurantController::class
+], function () {
     Route::get('/', 'getAllRestaurants');
     Route::get('/{id}',  'getRestaurant');
     Route::post('/', 'createRestaurant');
     Route::delete('/{id}',  'deleteRestaurant');
     Route::put('/{id}',  'updateRestaurant');
+    Route::get('/menus/{id}', 'restaurantMenus');
+});
+
+Route::group([
+    'middleware' => "auth.user",
+    "prefix" => "menus",
+    "controller" => MenuController::class
+], function () {;
+    // Route::get('/{id}',  'readMenu')->middleware('auth.user');
+    Route::get('/{id}',  'readMenu');
+    Route::post('/', 'createMenu');
+    Route::delete('/{id}',  'deleteMenu');
+    Route::put('/{id}',  'updateMenu');
+    Route::get('/', 'readAll');
+    Route::get('/restau/{id}', 'menuRestaurant');
 });
