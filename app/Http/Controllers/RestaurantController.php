@@ -12,12 +12,12 @@ class RestaurantController extends Controller
         $restaurants = Restaurant::all();
         // $restaurants2 = Restaurant::get();
         return response()->json([
-            "restaurants" => $restaurants
+            "restaurants" => $restaurants->load(['hasReviews', 'hasMenus'])
         ], 200);
     }
     public function getRestaurant($id)
     {
-        $restaurant = Restaurant::find($id);
+        $restaurant = Restaurant::with(['hasReviews', 'hasMenus'])->find($id);
         // $restaurant2 = Restaurant::where('id', $id)->first();
         // $restaurant3 = Restaurant::where('id', $id)->get()[0];
         return response()->json([
@@ -67,11 +67,13 @@ class RestaurantController extends Controller
     }
     public function restaurantMenus($id)
     {
+        $restaurant2 = Restaurant::with('hasMenus')->where('id', $id)->get();
         $restaurant = Restaurant::join('menus', 'menus.restaurant_id', '=', 'restaurants.id')
             ->where('restaurants.id', $id)
             ->get();
         return response()->json([
-            "restaurant" => $restaurant
+            "restaurant" => $restaurant,
+            "restaurant2" => $restaurant2
         ]);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\RestaurantController;
 use App\Models\Restaurant;
@@ -51,3 +52,13 @@ Route::group([
     Route::get('/', 'readAll');
     Route::get('/restau/{id}', 'menuRestaurant');
 });
+
+Route::group([
+    "middleware" => ["some.middleware", "auth.user"],
+    'controller' => DeliveryController::class
+], function () {
+
+    Route::apiResource('deliveries');
+    Route::get('deliveries/name/{name}', 'findByName');
+});
+Route::apiResource('deliveries', DeliveryController::class)->middleware('some.middleware');

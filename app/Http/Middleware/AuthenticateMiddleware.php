@@ -16,12 +16,12 @@ class AuthenticateMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = Auth::user();
-        if (!$user) {
-            return response()->json([
-                "message" => "unauthorized"
-            ]);
-        }
+        // $user = Auth::user();
+        // if (!$user) {
+        //     return response()->json([
+        //         "message" => "unauthorized"
+        //     ]);
+        // }
         return $next($request);
     }
 }

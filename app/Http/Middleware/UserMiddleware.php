@@ -18,11 +18,11 @@ class UserMiddleware
     {
         $user = Auth::user();
         
-        if ($user->user_role != "admin") {
-            return response()->json([
-                "message" => "unauthorized"
-            ]);
-        }
+        // if ($user->user_role != "admin") {
+        //     return response()->json([
+        //         "message" => "unauthorized"
+        //     ]);
+        // }
         return $next($request);
     }
 }

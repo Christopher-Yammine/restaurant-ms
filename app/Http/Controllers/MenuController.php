@@ -31,8 +31,10 @@ class MenuController extends Controller
     public function readAll()
     {
         $menus = Menu::all();
+        $menus2 = Menu::with('restaurant')->get();
         return response()->json([
-            "menu" => $menus
+            "menu" => $menus,
+            "menus2" => $menus2
         ], 200);
     }
     public function updateMenu(Request $req, $id)
@@ -75,8 +77,11 @@ class MenuController extends Controller
             ->join("restaurants", "restaurants.id", '=', 'menus.restaurant_id')
             ->where("menus.id", $id)
             ->get();
+        $menu2 = Menu::find($id);
         return response()->json([
-            "menu" => $menu
+            "menu" => $menu,
+            "menu2" => $menu2->load('restaurant')
+            //with() and load() are called eager loading
         ]);
     }
     public function createReview($id)

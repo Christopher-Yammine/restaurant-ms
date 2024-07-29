@@ -14,10 +14,10 @@ class Restaurant extends Model
 
     public function hasReviews()
     {
-        $this->hasMany(Review::class);
+        return $this->hasMany(Review::class);
     }
     public function hasMenus()
     {
-        $this->hasMany(Menu::class);
+        return $this->hasMany(Menu::class);
     }
 }
