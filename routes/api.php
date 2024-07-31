@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RestaurantController;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
@@ -55,10 +56,13 @@ Route::group([
 
 Route::group([
     "middleware" => ["some.middleware", "auth.user"],
-    'controller' => DeliveryController::class
 ], function () {
 
-    Route::apiResource('deliveries');
-    Route::get('deliveries/name/{name}', 'findByName');
+    Route::apiResource('deliveries', DeliveryController::class);
+    Route::get('deliveries/name/{name}', [DeliveryController::class, 'findByName']);
 });
 Route::apiResource('deliveries', DeliveryController::class)->middleware('some.middleware');
+Route::apiResource('notifications', NotificationController::class);
+// Route::apiResource('notifications', NotificationController::class)->except('index');
+
+// Route::get('/notifications', [NotificationController::class, "index"])->middleware('some.other.middleware');
